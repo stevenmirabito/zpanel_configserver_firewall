@@ -20,10 +20,15 @@ chomp $myv;
 $script = "/modules/csf/cgi-bin/index.cgi";
 $images = "/modules/csf/assets/images";
 
-do '../web-lib.pl';      
-&init_config();         
-&ReadParse();
-%FORM = %in;
+my $buffer = $ENV{'QUERY_STRING'};
+if ($buffer eq "") {$buffer = $ENV{POST}}
+my @pairs = split(/&/, $buffer);
+foreach my $pair (@pairs) {
+	my ($name, $value) = split(/=/, $pair);
+	$value =~ tr/+/ /;
+	$value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
+	$FORM{$name} = $value;
+}
 
 header("ConfigServer Security & Firewall",,,,,,,"");
 
