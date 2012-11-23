@@ -1,0 +1,9 @@
+<?php
+	exec('yum -y install perl-Time-HiRes');
+	exec('mkdir -p /tmp/csf_install');
+	exec('wget -q -O /tmp/csf_install/csf.tgz http://www.configserver.com/free/csf.tgz');
+	exec('tar -xf /tmp/csf_install/csf.tgz -C /tmp/csf_install');
+	exec('cd /tmp/csf_install/csf && sh install.sh');
+	exec('sh /etc/csf/remove_apf_bfd.sh');
+	exec('rm -rf /tmp/csf_install');
+?>
